@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la formation {{ formation.getFormationName() }}{% endblock %}
+
+{% block body %}
+<h1>Détail de la formation {{ formation.getFormationName() }}</h1>
+{% for session in formation.sessions %}
+
+    <p><a href="/session/{{ session.getId() }}">{{ session.getSessionName() }}</a>, du {{ session.getDateDebutSession()|date('d/m/Y') }} au {{ session.getDateFinSession()|date('d/m/Y') }}</p><br>
+    
+{% endfor %}
+
+
+{% endblock %}

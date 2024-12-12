@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des formations{% endblock %}
+
+{% block body %}
+
+{% for formation in formations %}
+
+    <a href="/formation/{{ formation.getId() }}">{{ formation.getFormationName() }}</a>
+    
+{% endfor %}
+
+
+{% endblock %}
