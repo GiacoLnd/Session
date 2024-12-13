@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}liste des stagiaires{% endblock %}
+
+{% block body %}
+<h1>Ajoutez une session</h1>
+
+{{form_start(formAddSession)}}
+<div>
+    <div class="col-sm">
+        {{form_row(formAddSession.sessionName)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {{form_row(formAddSession.dateDebutSession)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddSession.dateFinSession)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {{form_row(formAddSession.formateur)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddSession.formation)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {{form_row(formAddSession.stagiaires)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddSession.nombrePlace)}}
+    </div>
+</div>
+<div class="w-100">
+    {{form_row(formAddSession.valider)}}
+</div>
+{{form_end(formAddSession)}}
+
+{% endblock %}

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Stagiaire;
+use App\Form\StagiaireType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +27,43 @@ class StagiaireController extends AbstractController
             'stagiaires' => $stagiaires,
         ]);
     }
+    #[Route('/stagiaire/new', name: 'stagiaire_new')]
+    public function new(Stagiaire $stagiaire = null, Request $request, EntityManagerInterface $em): Response{
+        if(!$stagiaire){
+            $stagiaire = new Stagiaire();
+        }
+
+        $form = $this->createForm(StagiaireType::class, $stagiaire);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $stagiaire = $form->getData();
+            $em->persist($stagiaire);
+            $em->flush();
+            
+            return $this->redirectToRoute('app_stagiaire');
+        }
+        return $this->render('stagiaire/new.html.twig', [
+            'formAddStagiaire' => $form, 
+        ]);
+    }
+    
+    #[Route('/stagiaire/{id}/edit', name: 'stagiaire_edit')]
+    public function edit(Stagiaire $stagiaire, Request $request, EntityManagerInterface $em): Response
+    {
+    $form = $this->createForm(StagiaireType::class, $stagiaire);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->flush(); // Pas besoin de persist(), Doctrine détecte une modification
+        return $this->redirectToRoute('app_stagiaire');
+    }
+
+    return $this->render('stagiaire/edit.html.twig', [
+        'formEditStagiaire' => $form,    
+    ]);
+}
+
     #[Route('/stagiaire/{id}', name: 'stagiaire_detail')]
     public function detailsStagiaire(Stagiaire $stagiaire): Response
     {

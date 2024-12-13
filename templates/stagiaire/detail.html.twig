@@ -5,7 +5,7 @@
 {% block body %}
 <h1>Détail d'un stagiaire</h1>
 <h2>{{ stagiaire.prenom | capitalize }} {{ stagiaire.nom | capitalize }}</h2>
-date de naissance : {{ stagiaire.dateNaissance|date('d/m/Y') }}<br>
+Date de naissance : {{ stagiaire.dateNaissance|date('d/m/Y') }}<br>
 Ville de résidence : {{ stagiaire.ville | capitalize }}<br>
 Email : {{ stagiaire.email }}<br>
 Téléphone : {{ stagiaire.phone }}<br>
@@ -19,5 +19,7 @@ Liste des sessions suivies :
         <p><a href="/session/{{ session.getId() }}">{{ session.getSessionName() }}</a>, du {{ session.getDateDebutSession()|date('d/m/Y') }} au {{ session.getDateFinSession()|date('d/m/Y') }}</p><br>
     {% endfor %}
 {% endif %}
+
+<a href="{{path('stagiaire_edit', {'id': stagiaire.getId()})}}">Editez le stagiaire</a>
 
 {% endblock %}

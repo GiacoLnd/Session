@@ -50,7 +50,7 @@ class SessionRepository extends ServiceEntityRepository
             ->getResult();
     }
     public function findComingSession(){
-        $currentDate = new \datetime();
+        $currentDate = new \DateTime();
         return $this->createQueryBuilder('s')
             ->where('s.dateDebutSession > :date')
             ->setParameter('date', $currentDate)
@@ -59,7 +59,7 @@ class SessionRepository extends ServiceEntityRepository
     }
     public function findPassedSession(){
         
-        $currentDate = new \datetime();
+        $currentDate = new \DateTime();
         return $this->createQueryBuilder('s')
             ->andWhere('s.dateFinSession < :date')
             ->setParameter('date', $currentDate)
