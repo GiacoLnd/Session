@@ -9,7 +9,7 @@
 Date de début: <strong>{{ session.dateDebutSession|date('d/m/Y') }}</strong><br>
 Date de fin : <strong>{{ session.dateFinSession|date('d/m/Y') }}</strong><br> 
 
-Professeur :<strong>{{session.formateur.prenom}} {{session.formateur.nom}}</strong>
+Professeur :<a href="/formateur/{{session.formateur.getId()}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a>
 
 
 <h3>Liste des modules :</h3>
@@ -18,7 +18,7 @@ Professeur :<strong>{{session.formateur.prenom}} {{session.formateur.nom}}</stro
     <p>Aucun module n'est prévu pour le moment</p>
 {% else %}
     {% for programme in session.programmes %}
-        <p>{{ programme.formModule.moduleName }} - {{ programme.duree }} jours - {{ programme.formModule.categorie.CategoryModuleName }}</p>
+        <p><a href="/formModule/{{ programme.formModule.getId() }}">{{ programme.formModule.moduleName }}</a> - {{ programme.duree }} jours - {{ programme.formModule.categorie.CategoryModuleName }}</p>
     {% endfor %}
 {% endif %}
 

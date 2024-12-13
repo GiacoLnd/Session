@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des modules{% endblock %}
+
+{% block body %}
+
+{% for formModule in formModules %}
+
+        <p>{{ formModule.getModuleName() }} - Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+    
+{% endfor %}
+
+{% endblock %}

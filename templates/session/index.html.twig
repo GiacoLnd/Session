@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Liste des sessions{% endblock %}
+
+
+{% block body %}
+
+<h2>Liste des sessions passées</h2>
+{% if passedSessions is empty %}
+    <p>Aucune session en cours</p>
+{% else %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Titre de la session</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Places disponibles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passedSession in passedSessions %}
+            <tr>
+                <td><a href="{{path('session_details', {'id': passedSession.id})}}">{{ passedSession.sessionName }}</a></td>
+                <td>{{passedSession.dateDebutSession|date('d/m/Y')}}</td>
+                <td>{{passedSession.dateFinSession|date('d/m/Y')}}</td>
+                <td>{{passedSession.getAvailablePlace}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<h2>Liste des sessions en cours</h2>
+{% if currentSessions is empty %}
+    <p>Aucune session en cours</p>
+{% else %}
+<table border="1">
+    <thead>
+        <tr>
+            <th>Titre de la session</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Places disponibles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for currentSession in currentSessions %}
+        <tr>
+            <td><a href="{{path('session_details', {'id': currentSession.id})}}">{{ currentSession.sessionName }}</a></td>
+            <td>{{currentSession.dateDebutSession|date('d/m/Y')}}</td>
+            <td>{{currentSession.dateFinSession|date('d/m/Y')}}</td>
+            <td>{{currentSession.getAvailablePlace}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<h2>Liste des sessions futures</h2>
+{% if nextSessions is empty %}
+    <p>Aucune session en cours</p>
+{% else %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Titre de la session</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Places disponibles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nextSession in nextSessions %}
+            <tr>
+                <td><a href="{{path('session_details', {'id': nextSession.id})}}">{{ nextSession.sessionName }}</a></td>
+                <td>{{nextSession.dateDebutSession|date('d/m/Y')}}</td>
+                <td>{{nextSession.dateFinSession|date('d/m/Y')}}</td>
+                <td>{{nextSession.getAvailablePlace}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

@@ -12,6 +12,13 @@
         {% endblock %}
     </head>
     <body>
+        <ul>
+            <li><a href="{{path('app_formation')}}">Liste des formations</a></li>
+            <li><a href="{{path('app_session')}}">Liste des sessions dispensées</a></li>
+            <li><a href="{{path('app_stagiaire')}}">Liste des stagiaires</a></li>
+            <li><a href="{{path('app_formateur')}}">Liste des formateurs</a></li>
+            <li><a href="{{path('app_form_module')}}">Liste des modules</a></li>
+        </ul>
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails d'un module{% endblock %}
+
+{% block body %}
+<h1>Détail d'un module de formation :</h1>
+<p>Module : {{ formModule.getModuleName() }}</p>
+<p>Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+
+{% endblock %}

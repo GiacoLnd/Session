@@ -37,7 +37,7 @@ class Formateur
     /**
      * @var Collection<int, session>
      */
-    #[ORM\OneToMany(targetEntity: session::class, mappedBy: 'formateur', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formateur', orphanRemoval: true)]
     private Collection $sessions;
 
     public function __construct()
@@ -130,7 +130,7 @@ class Formateur
         return $this->sessions;
     }
 
-    public function addSession(session $session): static
+    public function addSession(Session $session): static
     {
         if (!$this->sessions->contains($session)) {
             $this->sessions->add($session);
@@ -140,7 +140,7 @@ class Formateur
         return $this;
     }
 
-    public function removeSession(session $session): static
+    public function removeSession(Session $session): static
     {
         if ($this->sessions->removeElement($session)) {
             // set the owning side to null (unless already changed)

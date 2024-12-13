@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail d'un formateur{% endblock %}
+
+{% block body %}
+<h1>Détail d'un formateur</h1>
+<h2>{{ formateur.prenom | capitalize }} {{ formateur.nom | capitalize }}</h2>
+date de naissance : {{ formateur.dateNaissance|date('d/m/Y') }}<br>
+Ville de résidence : {{ formateur.ville | capitalize }}<br>
+Email : {{ formateur.email }}<br>
+Téléphone : {{ formateur.phone }}<br>
+
+Liste des sessions dispensées :
+{% if formateur.sessions is empty %}
+<p>Le formateur n'assure aucune session prochainement</p>
+{% else %}
+    {% for session in formateur.sessions %}
+        <p><a href="/session/{{ session.getId() }}">{{ session.getSessionName() }}</a>, du {{ session.getDateDebutSession()|date('d/m/Y') }} au {{ session.getDateFinSession()|date('d/m/Y') }}</p>
+    {% endfor %}
+    
+{% endif %}
+
+
+{% endblock %}

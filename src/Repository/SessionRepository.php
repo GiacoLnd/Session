@@ -40,4 +40,33 @@ class SessionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findCurrentSession(){
+        $currentDate = new \datetime();
+        return $this->createQueryBuilder('s')
+            ->where('s.dateDebutSession <= :date')
+            ->andWhere('s.dateFinSession >= :date')
+            ->setParameter('date', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findComingSession(){
+        $currentDate = new \datetime();
+        return $this->createQueryBuilder('s')
+            ->where('s.dateDebutSession > :date')
+            ->setParameter('date', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findPassedSession(){
+        
+        $currentDate = new \datetime();
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateFinSession < :date')
+            ->setParameter('date', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 }

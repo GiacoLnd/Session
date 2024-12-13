@@ -25,8 +25,15 @@ class SessionController extends AbstractController
     public function list(EntityManagerInterface $entityManager): Response
     {
         $sessions = $entityManager->getRepository(Session::class)->findAll();
+    
+        $passedSessions = $entityManager->getRepository(Session::class)->findPassedSession();
+        $currentSessions = $entityManager->getRepository(Session::class)->findCurrentSession();
+        $nextSessions = $entityManager->getRepository(Session::class) ->findComingSession();
         return $this->render('session/index.html.twig', [
             'sessions' => $sessions,
+            'passedSessions' => $passedSessions,
+            'currentSessions' => $currentSessions,
+            'nextSessions' => $nextSessions
         ]);
     }
     #[Route('/session/{id}', name: 'session_details')]
@@ -35,6 +42,6 @@ class SessionController extends AbstractController
         return $this->render('session/detail.html.twig', [
             'session' => $session,
         ]);
-
     }
+
 }
