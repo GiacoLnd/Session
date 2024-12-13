@@ -22,9 +22,9 @@ class FormationController extends AbstractController
     #[Route('/formation', name: 'app_formation')]
     public function list(EntityManagerInterface $entityManager): Response
     {
-        $formation = $entityManager->getRepository(Formation::class)->findAll();
+        $formations = $entityManager->getRepository(Formation::class)->findAll();
         return $this->render('formation/index.html.twig', [
-            'formation' => $formation,
+            'formations' => $formations,
         ]);
     }
 

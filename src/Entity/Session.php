@@ -45,7 +45,7 @@ class Session
     /**
      * @var Collection<int, Programme>
      */
-    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'sessions', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'session', orphanRemoval: true)]
     private Collection $programmes;
 
     public function __construct()
@@ -186,6 +186,11 @@ class Session
         }
 
         return $this;
+    }
+
+    public function getAvailablePlace(): ?int
+    {
+        return $this->nombrePlace - $this->stagiaires->count(); 
     }
 
 }

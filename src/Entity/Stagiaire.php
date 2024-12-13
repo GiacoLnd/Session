@@ -37,7 +37,7 @@ class Stagiaire
     /**
      * @var Collection<int, session>
      */
-    #[ORM\ManyToMany(targetEntity: session::class, inversedBy: 'stagiaires')]
+    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'stagiaires')]
     private Collection $sessions;
 
     public function __construct()
@@ -130,7 +130,7 @@ class Stagiaire
         return $this->sessions;
     }
 
-    public function addSession(session $session): static
+    public function addSession(Session $session): static
     {
         if (!$this->sessions->contains($session)) {
             $this->sessions->add($session);
@@ -139,7 +139,7 @@ class Stagiaire
         return $this;
     }
 
-    public function removeSession(session $session): static
+    public function removeSession(Session $session): static
     {
         $this->sessions->removeElement($session);
 

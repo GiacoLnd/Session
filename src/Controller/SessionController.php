@@ -31,16 +31,10 @@ class SessionController extends AbstractController
     }
     #[Route('/session/{id}', name: 'session_details')]
     public function detailsSession(Session $session, EntityManagerInterface $em): Response
-    {
-        // Charger les programmes associés à la session
-        $programmes = $em->getRepository(Programme::class)
-            ->findBy(['session' => $session]);
-        $stagiaires = $session->getStagiaires();
-    
+    {  
         return $this->render('session/detail.html.twig', [
             'session' => $session,
-            'programmes' => $programmes,
-            'stagiaires' => $stagiaires
         ]);
+
     }
 }

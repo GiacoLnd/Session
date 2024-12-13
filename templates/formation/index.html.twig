@@ -6,7 +6,7 @@
 
 {% for formation in formations %}
 
-    <a href="/formation/{{ formation.getId() }}">{{ formation.getFormationName() }}</a>
+    <a href="{{path('formation_detail', {'id': formation.getId()})}}">{{ formation.getFormationName() }}</a>
     
 {% endfor %}
 

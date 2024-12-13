@@ -1,19 +1,43 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}Liste des sessions{% endblock %}
 
 {% block body %}
-<h1>Détails de la session : {{ session.getSessionName() }}</h1>
+<h1>Détails de la session :</h1>
+<h2>{{ session.sessionName }}</h2>
+Date de début: <strong>{{ session.dateDebutSession|date('d/m/Y') }}</strong><br>
+Date de fin : <strong>{{ session.dateFinSession|date('d/m/Y') }}</strong><br> 
 
-Professeur :{{session.formateur.prenom}} {{session.formateur.nom}}
+Professeur :<strong>{{session.formateur.prenom}} {{session.formateur.nom}}</strong>
 
-<h2>Liste des modules</h2>
-{% for programme in programmes %}
-    <p>Module : <a href="">{{ programme.formModule.moduleName }}</a> - Durée : {{ programme.duree }} heures</p>
-{% endfor %}
 
-<h2>Liste des stagiaires</h2>
-{% for stagiaire in stagiaires %}
-    <p><a href="">{{ stagiaire.prenom }} {{ stagiaire.nom }}</a></p>
-{% endfor %}
+<h3>Liste des modules :</h3>
+
+{% if session.programmes is empty %}
+    <p>Aucun module n'est prévu pour le moment</p>
+{% else %}
+    {% for programme in session.programmes %}
+        <p>{{ programme.formModule.moduleName }} - {{ programme.duree }} jours - {{ programme.formModule.categorie.CategoryModuleName }}</p>
+    {% endfor %}
+{% endif %}
+
+<h3>Liste des stagiaires :</h3>
+{% if session.stagiaires is empty %}
+    <p>Aucun stagiaire n'est inscrit en ce moment</p>
+{% else %}
+    {% for stagiaire in session.stagiaires %}
+        <p><a href="/stagiaire/{{stagiaire.getId()}}">{{ stagiaire.prenom }} {{ stagiaire.nom }}</a></p>
+    {% endfor %}
+{% endif %}
+
+Places totales : <strong>{{ session.nombrePlace }}</strong><br>
+Places restantes : <strong>{{session.getAvailablePlace}}</strong>
+
+
+
+
 {% endblock %}
+
+
+
