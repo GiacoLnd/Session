@@ -170,7 +170,7 @@ class Session
     {
         if (!$this->programmes->contains($programme)) {
             $this->programmes->add($programme);
-            $programme->setSessions($this);
+            $programme->setSession($this);
         }
 
         return $this;

@@ -66,7 +66,56 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    // public function isStagiaireInSession($idSession, $idStagiaire)
+    // {
+    //     return $this->createQueryBuilder('sess')
+    //         ->leftJoin('sess.stagiaires', 'stag')
+    //         ->andWhere('sess.id = :idSession')
+    //         ->andWhere('stag.id = :idStagiaire')
+    //         ->setParameter('idSession', $idSession)
+    //         ->setParameter('idStagiaire', $idStagiaire)
+    //         ->getQuery()
+    //         ->getOneOrNullResult();
+    // }
+    public function findNonInscrits($session_id){
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
 
+        $qb = $sub;
 
+        $qb->select('s')
+            ->from('App\Entity\Stagiaire', 's')
+            ->leftJoin('s.sessions', 'se')
+            ->where('se.id = :id');
 
+        $sub = $em->createQueryBuilder();
+        $sub->select('st')
+            ->from('App\Entity\Stagiaire', 'st')
+            ->where($sub->expr()->notIn('st.id', $qb->getDQL()))
+            ->setParameter('id', $session_id)
+            ->orderBy('st.nom');
+
+        $query = $sub->getQuery();
+        return $query->getResult();
+    }
+    public function findNonProgramme($session_id){
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder();
+        $qb->select('pm.id')
+            ->from('App\Entity\Programme', 'p')
+            ->leftJoin('p.formModule', 'pm') 
+            ->where('p.session = :id');
+    
+        $sub = $em->createQueryBuilder();
+        $sub->select('fm')
+            ->from('App\Entity\FormModule', 'fm')
+            ->where($sub->expr()->notIn('fm.id', $qb->getDQL())) 
+            ->setParameter('id', $session_id)
+            ->orderBy('fm.moduleName'); 
+    
+        
+        $query = $sub->getQuery();
+        return $query->getResult();
+    }
 }

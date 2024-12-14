@@ -9,7 +9,7 @@
 Date de début: <strong>{{ session.dateDebutSession|date('d/m/Y') }}</strong><br>
 Date de fin : <strong>{{ session.dateFinSession|date('d/m/Y') }}</strong><br> 
 
-Professeur :<a href="/formateur/{{session.formateur.getId()}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a>
+Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()})}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a>
 
 
 <h3>Liste des modules :</h3>
@@ -18,24 +18,59 @@ Professeur :<a href="/formateur/{{session.formateur.getId()}}">{{session.formate
     <p>Aucun module n'est prévu pour le moment</p>
 {% else %}
     {% for programme in session.programmes %}
-        <p><a href="/formModule/{{ programme.formModule.getId() }}">{{ programme.formModule.moduleName }}</a> - {{ programme.duree }} jours - {{ programme.formModule.categorie.CategoryModuleName }}</p>
+        <p>
+            <a href="{{ path('form_module_detail', {'id': programme.formModule.id}) }}">
+                {{ programme.formModule.moduleName }}
+            </a>
+            - {{ programme.duree }} jours
+            - {{ programme.formModule.categorie.CategoryModuleName }}
+            <a href="{{ path('session_desinscrire_module', { session_id: session.id, module_id: programme.formModule.id }) }}" class="btn btn-danger">
+                Déprogrammer
+            </a>
+        </p>
     {% endfor %}
 {% endif %}
 
 <h3>Liste des stagiaires :</h3>
-{% if session.stagiaires is empty %}
-    <p>Aucun stagiaire n'est inscrit en ce moment</p>
-{% else %}
-    {% for stagiaire in session.stagiaires %}
-        <p><a href="/stagiaire/{{stagiaire.getId()}}">{{ stagiaire.prenom }} {{ stagiaire.nom }}</a></p>
-    {% endfor %}
-{% endif %}
-
+{% for stagiaire in stagiairesInscrits %}
+    <p>
+        <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
+            {{ stagiaire.prenom }} {{ stagiaire.nom }}
+        </a>
+        <a href="{{ path('session_desinscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-danger">
+            Désinscrire
+        </a>
+    </p>
+{% endfor %}
 Places totales : <strong>{{ session.nombrePlace }}</strong><br>
 Places restantes : <strong>{{session.getAvailablePlace}}</strong>
 
+Liste des stagiaires non-inscrits :
 
+{% for stagiaire in stagiaires %}
+    <p>
+        <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
+            {{ stagiaire.prenom }} {{ stagiaire.nom }}
+        </a>
+        <a href="{{ path('session_inscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-success">
+            Inscrire
+        </a>
+    </p>
+{% endfor %}
 
+Liste des modules non-programmés : 
+
+{% for programme in programmes %}
+    <p>
+        <a href="{{ path('form_module_detail', {'id': programme.id}) }}">
+            {{ programme.moduleName }}
+        </a>
+        - {{ programme.categorie.CategoryModuleName }}
+        <a href="{{ path('session_inscrire_module', {'session_id': session.id, 'module_id': programme.id}) }}" class="btn btn-success">
+            Programmer
+        </a>
+    </p>
+{% endfor %}
 
 {% endblock %}
 

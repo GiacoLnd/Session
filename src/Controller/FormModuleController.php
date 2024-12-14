@@ -52,7 +52,7 @@ class FormModuleController extends AbstractController
     }
 
     #[Route('/formModule/{id}', name: 'form_module_detail')]
-    public function detailsFormModule(FormModule $formModule): Response
+    public function detailsFormModule(FormModule $formModule, EntityManagerInterface $em): Response
     {
         return $this->render('formModule/detail.html.twig', [
             'formModule' => $formModule,

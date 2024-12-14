@@ -40,4 +40,5 @@ class StagiaireRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
 }

@@ -55,8 +55,8 @@ class StagiaireController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $em->flush(); // Pas besoin de persist(), Doctrine détecte une modification
-        return $this->redirectToRoute('app_stagiaire');
+        $em->flush();
+        return $this->redirectToRoute('>>');
     }
 
     return $this->render('stagiaire/edit.html.twig', [

@@ -6,7 +6,7 @@
 
 {% for formModule in formModules %}
 
-        <p>{{ formModule.getModuleName() }} - Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+        <p><a href="{{path('form_module_detail', {'id': formModule.getId()})}}">{{ formModule.getModuleName() }}</a> - Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
     
 {% endfor %}
 

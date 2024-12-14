@@ -6,5 +6,10 @@
 <h1>Détail d'un module de formation :</h1>
 <p>Module : {{ formModule.getModuleName() }}</p>
 <p>Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+<p>Sessions associées :
+    {% for programme in formModule.programmes %}
+        {{ programme.session.sessionName }} - {{ programme.duree }} jours     
+    {% endfor %}
+</p>
 
 {% endblock %}

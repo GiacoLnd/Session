@@ -18,14 +18,14 @@ class FormModule
     #[ORM\Column(length: 50)]
     private ?string $moduleName = null;
 
-    #[ORM\ManyToOne(inversedBy: 'FormModules')]
+    #[ORM\ManyToOne(inversedBy: 'formModules')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $categorie = null;
 
     /**
      * @var Collection<int, Programme>
      */
-    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'FormModules', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'formModule', orphanRemoval: true)]
     private Collection $programmes;
 
     public function __construct()
@@ -90,5 +90,8 @@ class FormModule
         }
 
         return $this;
+    }
+    public  function getDuree(){
+        return $this->programmes->getDuree();
     }
 }
