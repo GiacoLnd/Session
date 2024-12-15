@@ -7,7 +7,10 @@
 {% block body %}
 
 <h2>Liste des sessions passées</h2>
-<a href="{{path('session_new')}}">Ajoutez une session</a>
+{% if is_granted('ROLE_ADMIN')%}
+    <a href="{{path('session_new')}}">Ajoutez une session</a>
+{% endif %}
+
 {% if passedSessions is empty %}
     <p>Aucune session en cours</p>
 {% else %}

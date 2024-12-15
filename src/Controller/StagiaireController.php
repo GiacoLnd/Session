@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class StagiaireController extends AbstractController
 {
@@ -28,7 +29,7 @@ class StagiaireController extends AbstractController
         ]);
     }
     #[Route('/stagiaire/new', name: 'stagiaire_new')]
-    public function new(Stagiaire $stagiaire = null, Request $request, EntityManagerInterface $em): Response{
+    public function new(Stagiaire $stagiaire = null, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response{
         if(!$stagiaire){
             $stagiaire = new Stagiaire();
         }
@@ -37,6 +38,9 @@ class StagiaireController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $stagiaire->setRoles(['ROLE_USER']);
+            $passwordHash = $passwordHasher->hashPassword($stagiaire, $stagiaire->getPassword());
+            $stagiaire->setPassword($passwordHash);
             $stagiaire = $form->getData();
             $em->persist($stagiaire);
             $em->flush();
@@ -64,7 +68,7 @@ class StagiaireController extends AbstractController
     ]);
 }
 
-    #[Route('/stagiaire/{id}', name: 'stagiaire_detail')]
+    #[Route('/stagiaire/{id<\d+>}', name: 'stagiaire_detail')]
     public function detailsStagiaire(Stagiaire $stagiaire): Response
     {
         return $this->render('stagiaire/detail.html.twig', [

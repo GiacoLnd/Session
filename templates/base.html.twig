@@ -17,6 +17,18 @@
             <li><a href="{{path('app_formateur')}}">Liste des formateurs</a></li>
             <li><a href="{{path('app_form_module')}}">Liste des modules</a></li>
         </ul>
+
+        {% if app.user %}
+            <p>Bienvenue, {{ app.user.prenom }} {{ app.user.nom }}</p>
+            {% if is_granted('ROLE_ADMIN') %}
+                <button onclick="window.location.href='{{ path('formateur_logout') }}'" class="btn btn-danger">Déconnexion (Formateur)</button>
+            {% else %}
+                <button onclick="window.location.href='{{ path('stagiaire_logout') }}'" class="btn btn-danger">Déconnexion (Stagiaire)</button>
+            {% endif %}
+        {% else %}
+             <a href="{{ path('formateur_login') }}">Connexion Formateur</a> - <a href="{{ path('stagiaire_login') }}">Connexion Stagiaire</a>
+        {% endif %}
+
         
         {% block body %}{% endblock %}
         

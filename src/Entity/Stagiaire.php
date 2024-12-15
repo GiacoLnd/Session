@@ -6,10 +6,12 @@ use App\Repository\StagiaireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StagiaireRepository::class)]
-class Stagiaire
+class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,6 +41,12 @@ class Stagiaire
      */
     #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'stagiaires')]
     private Collection $sessions;
+
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -149,5 +157,38 @@ class Stagiaire
     public function __toString(): string
     {
         return $this->nom . ' ' . $this->prenom;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+        public function eraseCredentials()
+    {
+        // Si tu stockes des données sensibles temporaires, efface-les ici
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

@@ -40,6 +40,12 @@ class Formateur
     #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formateur', orphanRemoval: true)]
     private Collection $sessions;
 
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -154,5 +160,38 @@ class Formateur
     public function __toString(): string
     {
         return $this->nom . ' ' . $this->prenom;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+    public function eraseCredentials()
+    {
+        // Si tu stockes des données sensibles temporaires, efface-les ici
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }
