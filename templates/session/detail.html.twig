@@ -24,9 +24,11 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
             </a>
             - {{ programme.duree }} jours
             - {{ programme.formModule.categorie.CategoryModuleName }}
+                {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('session_desinscrire_module', { session_id: session.id, module_id: programme.formModule.id }) }}" class="btn btn-danger">
                     Déprogrammer
                 </a>
+                {% endif %}
         </p>
     {% endfor %}
 {% endif %}
@@ -37,13 +39,16 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
         <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
             {{ stagiaire.prenom }} {{ stagiaire.nom }}
         </a>
+        {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('session_desinscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-danger">
             Désinscrire</a>
+        {% endif %}
     </p>
 {% endfor %}
 Places totales : <strong>{{ session.nombrePlace }}</strong><br>
 Places restantes : <strong>{{session.getAvailablePlace}}</strong>
 
+{% if is_granted('ROLE_ADMIN') %}
 Liste des stagiaires non-inscrits :
 
 {% for stagiaire in stagiaires %}
@@ -52,8 +57,7 @@ Liste des stagiaires non-inscrits :
             {{ stagiaire.prenom }} {{ stagiaire.nom }}
         </a>
             <a href="{{ path('session_inscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-success">
-            Inscrire</a>
-    </p>
+            Inscrire</a></p>
 {% endfor %}
 
 <h2>Prévoir des modules pour cette session</h2>
@@ -80,6 +84,7 @@ Liste des stagiaires non-inscrits :
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 {% endblock %}
 
 
