@@ -40,4 +40,12 @@ class ProgrammeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findModuleDuree(){
+        return $this->createQueryBuilder('p')
+            ->select('p.formModule, p.duree')
+            ->groupBy('p.formModule')
+            ->getQuery()
+            ->getResult();
+    }
 }

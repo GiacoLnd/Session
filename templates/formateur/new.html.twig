@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un formateur{% endblock %}
+
+{% block body %}
+<h1>Ajoutez un formateur</h1>
+
+{{form_start(formAddFormateur)}}
+
+<div class="row">
+    <div class="col-sm">
+        {{form_row(formAddFormateur.prenom)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.nom)}}
+    </div>
+</div>
+<div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.ville)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.dateNaissance)}}
+    </div>
+</div>
+<div class="row">
+</div>
+<div class="row">
+    <div class="col-sm">
+        {{form_row(formAddFormateur.phone)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.email)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.password)}}
+    </div>
+    <div class="col-sm">
+        {{form_row(formAddFormateur.sessions)}}
+    </div>
+</div>
+<div class="w-100">
+    {{form_row(formAddFormateur.valider)}}
+</div>
+{{form_end(formAddFormateur)}}
+
+{% endblock %}

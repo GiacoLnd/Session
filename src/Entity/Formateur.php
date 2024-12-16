@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\FormateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Repository\FormateurRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormateurRepository::class)]
@@ -136,7 +136,7 @@ class Formateur
         return $this->sessions;
     }
 
-    public function addSession(Session $session): static
+    public function addSession(Sess $session): static
     {
         if (!$this->sessions->contains($session)) {
             $this->sessions->add($session);
@@ -174,24 +174,5 @@ class Formateur
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
 
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-    public function eraseCredentials()
-    {
-        // Si tu stockes des données sensibles temporaires, efface-les ici
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
 }

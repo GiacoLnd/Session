@@ -3,14 +3,14 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
-        stagiaire_provider:
-            entity:
-                class: App\Entity\Stagiaire
-                property: email
-
         formateur_provider:
             entity:
                 class: App\Entity\Formateur
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
                 property: email
 
     firewalls:
@@ -18,33 +18,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        stagiaire:
-            lazy: true
-            provider: stagiaire_provider
-            form_login:
-                login_path: stagiaire_login
-                check_path: stagiaire_login
-                default_target_path: app_formation
-                enable_csrf: true
-            logout:
-                path: stagiaire_logout
-                # where to redirect after logout
-                target: app_formation
-
         formateur:
             lazy: true
+            pattern: ^/formateur
             provider: formateur_provider
             form_login:
                 login_path: formateur_login
                 check_path: formateur_login
-                default_target_path: app_formation
+                default_target_path: app_session
                 enable_csrf: true
             logout:
                 path: formateur_logout
                 # where to redirect after logout
-                target: app_formation
-
-
+                target: app_session
+                
     access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }

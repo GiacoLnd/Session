@@ -88,8 +88,7 @@ public function inscrireStagiaire(int $session_id, int $stagiaire_id, SessionRep
 #[Route('/session/{session_id}/stagiaire/desinscrire/{stagiaire_id}', name: 'session_desinscrire_stagiaire')]
 
 public function desinscrireStagiaire(int $session_id, int $stagiaire_id, SessionRepository $sessionRepository, StagiaireRepository $stagiaireRepository, EntityManagerInterface $em): Response
-{
-    $session = $sessionRepository->find($session_id);
+{   $session = $sessionRepository->find($session_id);
     $stagiaire = $stagiaireRepository->find($stagiaire_id);
 
 
@@ -133,22 +132,58 @@ public function desinscrireModule(int $session_id, int $module_id, ProgrammeRepo
     return $this->redirectToRoute('session_details', ['id' => $session_id]);
 }
 
-    #[Route('/session/{id}', name: 'session_details')]
-    public function detailsSession(Session $session, EntityManagerInterface $em, SessionRepository $sr): Response
-    {  
-        $nonInscrits = $sr->findNonInscrits($session->getId());
-        $stagiairesInscrits = $session->getStagiaires();
+#[Route('/session/{id}', name: 'session_details')]
+public function detailsSession(
+    Session $session,
+    EntityManagerInterface $em,
+    FormModuleRepository $formModuleRepository,
+    SessionRepository $sessionRepository,
+    ProgrammeRepository $programmeRepository,
+    Request $request
+): Response {
+    // Récupération des stagiaires non inscrits
+    $nonInscrits = $sessionRepository->findNonInscrits($session->getId());
+    //Récupération des stagiaires inscrits
+    $stagiairesInscrits = $session->getStagiaires();
+    // Récupération des modules non-programmés
+    $nonProgramme = $sessionRepository->findNonProgramme($session->getId());
+    // Récupération des modules déjà programmés
+    $moduleProgrammes = $session->getProgrammes(); 
 
-        $nonProgramme = $sr->findNonProgramme($session->getId());
-        $moduleProgrammes = $session->getProgrammes();
+    // Création du formulaire de gestion de la durée et de la programmation des modules
+    if ($request->isMethod('POST') && $request->request->has('modules')) {
+        // Récupération des données du formulaire dans la variable $formData
+        $formData = $request->request->all(); 
+        
+        // Programmation des modules avec durée 
+        foreach ($formData['modules'] as $moduleId => $duree) {
+            // Récupère le module
+            $module = $formModuleRepository->find($moduleId); // 
+            // Si le module et la durée sont valides
+            if ($module && $duree > 0) {
+                // Intègre le module dans la session
+                $programme = new Programme();
+                $programme->setFormModule($module);
+                $programme->setSession($session);
+                $programme->setDuree($duree);
 
-        return $this->render('session/detail.html.twig', [
-            'session' => $session,
-            'stagiaires' => $nonInscrits,
-            'stagiairesInscrits' => $stagiairesInscrits,
-            'programmes' => $nonProgramme,
-            'modulesProgrammes' => $moduleProgrammes
-        ]);
+                $em->persist($programme);
+            }
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('session_details', ['id' => $session->getId()]);
+    }
+
+    return $this->render('session/detail.html.twig', [
+        'session' => $session,
+        'modulesNonProgrammes' => $nonProgramme,
+        'modulesProgrammes' => $moduleProgrammes,
+        'stagiaires' => $nonInscrits,
+        'stagiairesInscrits' => $stagiairesInscrits,
+    ]);
     }
 
 }
+

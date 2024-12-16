@@ -38,7 +38,6 @@ class StagiaireController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $stagiaire->setRoles(['ROLE_USER']);
             $passwordHash = $passwordHasher->hashPassword($stagiaire, $stagiaire->getPassword());
             $stagiaire->setPassword($passwordHash);
             $stagiaire = $form->getData();

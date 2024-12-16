@@ -6,12 +6,10 @@ use App\Repository\StagiaireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StagiaireRepository::class)]
-class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface
+class Stagiaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -171,24 +169,4 @@ class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-        public function eraseCredentials()
-    {
-        // Si tu stockes des données sensibles temporaires, efface-les ici
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
 }

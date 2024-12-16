@@ -118,4 +118,21 @@ class SessionRepository extends ServiceEntityRepository
         $query = $sub->getQuery();
         return $query->getResult();
     }
+
+    public function updateDurationsForModule(int $moduleId, array $durees): void
+    {
+        $qb = $this->_em->createQueryBuilder();
+    
+        foreach ($durees as $programmeId => $newDuree) {
+            $qb->update(Programme::class, 'p')
+                ->set('p.duree', ':duree')
+                ->where('p.formModule = :moduleId AND p.id = :programmeId')
+                ->setParameter('duree', $newDuree)
+                ->setParameter('moduleId', $moduleId)
+                ->setParameter('programmeId', $programmeId);
+    
+            $qb->getQuery()->execute();
+        }
+    }
+
 }

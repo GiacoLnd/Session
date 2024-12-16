@@ -24,11 +24,9 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
             </a>
             - {{ programme.duree }} jours
             - {{ programme.formModule.categorie.CategoryModuleName }}
-            {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('session_desinscrire_module', { session_id: session.id, module_id: programme.formModule.id }) }}" class="btn btn-danger">
                     Déprogrammer
                 </a>
-            {% endif %}
         </p>
     {% endfor %}
 {% endif %}
@@ -39,10 +37,8 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
         <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
             {{ stagiaire.prenom }} {{ stagiaire.nom }}
         </a>
-        {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('session_desinscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-danger">
             Désinscrire</a>
-        {% endif %}
     </p>
 {% endfor %}
 Places totales : <strong>{{ session.nombrePlace }}</strong><br>
@@ -55,28 +51,34 @@ Liste des stagiaires non-inscrits :
         <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
             {{ stagiaire.prenom }} {{ stagiaire.nom }}
         </a>
-        {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('session_inscrire_stagiaire', {'session_id': session.id, 'stagiaire_id': stagiaire.id}) }}" class="btn btn-success">
             Inscrire</a>
-        {% endif %}
     </p>
 {% endfor %}
 
-Liste des modules non-programmés : 
+<h2>Liste des modules non-programmés :</h2>
 
-{% for programme in programmes %}
-    <p>
-        <a href="{{ path('form_module_detail', {'id': programme.id}) }}">
-            {{ programme.moduleName }}
-        </a>
-        - {{ programme.categorie.CategoryModuleName }}
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('session_inscrire_module', {'session_id': session.id, 'module_id': programme.id}) }}" class="btn btn-success">
-            Programmer</a>
-        {% endif %}
-    </p>
-{% endfor %}
-
+<form method="post" action="{{ path('session_details', { id: session.id }) }}">
+    <table>
+        <thead>
+            <tr>
+                <th>Module</th>
+                <th>Durée (en jours)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in modulesNonProgrammes %}
+                <tr>
+                    <td>{{ module.moduleName }}</td>
+                    <td>
+                        <input type="number" name="modules[{{ module.id }}]" min="1" value="1" />
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-success">Programmer le(s) module(s)</button>
+</form>
 {% endblock %}
 
 

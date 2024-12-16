@@ -91,7 +91,4 @@ class FormModule
 
         return $this;
     }
-    public  function getDuree(){
-        return $this->programmes->getDuree();
-    }
 }
