@@ -41,12 +41,14 @@ class FormModuleRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findModulesWithDurations(): array
+    public function findModuleWithDuration(int $moduleId): ?array
     {
         return $this->createQueryBuilder('fm')
-            ->select('fm.id', 'fm.moduleName', 'p.duree')
+            ->select('fm', 'p.duree')
             ->leftJoin('fm.programmes', 'p')
+            ->where('fm.id = :moduleId')
+            ->setParameter('moduleId', $moduleId)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }

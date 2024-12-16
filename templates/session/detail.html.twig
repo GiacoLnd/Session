@@ -56,29 +56,30 @@ Liste des stagiaires non-inscrits :
     </p>
 {% endfor %}
 
-<h2>Liste des modules non-programmés :</h2>
+<h2>Prévoir des modules pour cette session</h2>
 
-<form method="post" action="{{ path('session_details', { id: session.id }) }}">
-    <table>
-        <thead>
+<table>
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>Durée (en jours)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for module in modulesNonProgrammes %}
             <tr>
-                <th>Module</th>
-                <th>Durée (en jours)</th>
+                <td>{{ module.moduleName }}</td>
+                <td>
+                    <form method="post" action="{{ path('session_inscrire_module', { session_id: session.id, module_id: module.id }) }}">
+                        <input type="number" name="duree" min="1" value="1" />
+                        <button type="submit" class="btn btn-primary">Prévoir</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for module in modulesNonProgrammes %}
-                <tr>
-                    <td>{{ module.moduleName }}</td>
-                    <td>
-                        <input type="number" name="modules[{{ module.id }}]" min="1" value="1" />
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <button type="submit" class="btn btn-success">Programmer le(s) module(s)</button>
-</form>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 
 

@@ -87,7 +87,7 @@ public function inscrireStagiaire(int $session_id, int $stagiaire_id, SessionRep
 
 #[Route('/session/{session_id}/stagiaire/desinscrire/{stagiaire_id}', name: 'session_desinscrire_stagiaire')]
 
-public function desinscrireStagiaire(int $session_id, int $stagiaire_id, SessionRepository $sessionRepository, StagiaireRepository $stagiaireRepository, EntityManagerInterface $em): Response
+public function desinscrireStagiaire(int $session_id, int $stagiaire_id, SessionRepository $sessionRepository,FormModuleRepository $fr, StagiaireRepository $stagiaireRepository, EntityManagerInterface $em): Response
 {   $session = $sessionRepository->find($session_id);
     $stagiaire = $stagiaireRepository->find($stagiaire_id);
 
@@ -100,20 +100,20 @@ public function desinscrireStagiaire(int $session_id, int $stagiaire_id, Session
 }
 
 #[Route('/session/{session_id}/module/inscrire/{module_id}', name: 'session_inscrire_module')]
-public function inscrireModule(int $session_id, int $module_id, SessionRepository $sessionRepository, FormModuleRepository $moduleRepository, ProgrammeRepository $pr, EntityManagerInterface $em): Response {
+public function inscrireModule(int $session_id, int $module_id,Request $request, SessionRepository $sessionRepository, FormModuleRepository $moduleRepository, ProgrammeRepository $pr, EntityManagerInterface $em): Response {
     $session = $sessionRepository->find($session_id);
     $module = $moduleRepository->find($module_id);
-    ;
-    
+    $duree = $moduleRepository->findModuleWithDuration($module_id);
+    $duree = $request->request->get('duree');
+
     $programme = new Programme();
     $programme->setSession($session);
     $programme->setFormModule($module);
-    $programme->setDuree(0);
+    $programme->setDuree($duree);
 
-    // Ajoute le programme à la session
     $session->addProgramme($programme);
     $em->persist($programme);
-    $em->persist($session); // deux entités - deux persist
+    $em->persist($session);
     $em->flush();
 
 
@@ -143,36 +143,37 @@ public function detailsSession(
 ): Response {
     // Récupération des stagiaires non inscrits
     $nonInscrits = $sessionRepository->findNonInscrits($session->getId());
-    //Récupération des stagiaires inscrits
+    // Récupération des stagiaires inscrits
     $stagiairesInscrits = $session->getStagiaires();
     // Récupération des modules non-programmés
     $nonProgramme = $sessionRepository->findNonProgramme($session->getId());
     // Récupération des modules déjà programmés
-    $moduleProgrammes = $session->getProgrammes(); 
+    $moduleProgrammes = $session->getProgrammes();
 
-    // Création du formulaire de gestion de la durée et de la programmation des modules
-    if ($request->isMethod('POST') && $request->request->has('modules')) {
-        // Récupération des données du formulaire dans la variable $formData
-        $formData = $request->request->all(); 
-        
-        // Programmation des modules avec durée 
-        foreach ($formData['modules'] as $moduleId => $duree) {
-            // Récupère le module
-            $module = $formModuleRepository->find($moduleId); // 
-            // Si le module et la durée sont valides
-            if ($module && $duree > 0) {
-                // Intègre le module dans la session
-                $programme = new Programme();
-                $programme->setFormModule($module);
-                $programme->setSession($session);
-                $programme->setDuree($duree);
+    // Vérification si une soumission a été effectuée
+    if ($request->isMethod('POST') && $request->request->has('module_id')) {
+        $moduleId = $request->request->get('module_id');
+        $duree = $formModuleRepository->findModuleWithDuration($moduleId);
 
-                $em->persist($programme);
-            }
+
+        // Recherche du module à partir de l'ID
+        $module = $formModuleRepository->find($moduleId);
+
+        if (!$module) {
+            $this->addFlash('error', 'Module introuvable.');
+            return $this->redirectToRoute('session_details', ['id' => $session->getId()]);
         }
 
+        // Création d'un nouveau programme
+        $programme = new Programme();
+        $programme->setFormModule($module);
+        $programme->setSession($session);
+        $programme->setDuree($duree);
+
+        $em->persist($programme);
         $em->flush();
 
+        $this->addFlash('success', 'Le module a été prévu avec succès.');
         return $this->redirectToRoute('session_details', ['id' => $session->getId()]);
     }
 
@@ -183,7 +184,7 @@ public function detailsSession(
         'stagiaires' => $nonInscrits,
         'stagiairesInscrits' => $stagiairesInscrits,
     ]);
-    }
+}
 
 }
 

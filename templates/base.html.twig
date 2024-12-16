@@ -18,7 +18,13 @@
             <li><a href="{{path('app_form_module')}}">Liste des modules</a></li>
         </ul>
 
-        
+        {% if app.user %}
+            {{path('app_logout')}}
+            bienvenue {{app.user.email}}
+        {% else %}
+            {{path('app_login')}}
+            {{path('app_register')}}
+        {% endif %}
         {% block body %}{% endblock %}
         
         {% block javascripts %}

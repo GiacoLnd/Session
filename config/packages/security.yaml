@@ -20,17 +20,16 @@ security:
 
         formateur:
             lazy: true
-            pattern: ^/formateur
             provider: formateur_provider
             form_login:
-                login_path: formateur_login
-                check_path: formateur_login
-                default_target_path: app_session
+                login_path: app_login
+                check_path: app_login
+                default_target_path: app_formation
                 enable_csrf: true
             logout:
-                path: formateur_logout
+                path: app_logout
                 # where to redirect after logout
-                target: app_session
+                target: app_formation
                 
     access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
