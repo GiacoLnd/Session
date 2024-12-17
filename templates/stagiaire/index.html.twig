@@ -7,7 +7,7 @@
 <h2>Liste des stagiaires :</h2>
 
 {% if is_granted('ROLE_ADMIN')%}
-    <a href="{{path('stagiaire_new')}}">Ajoutez un stagiaire</a>
+    <a href="{{path('stagiaire_new')}}" class='btn btn-primary'>Ajoutez un stagiaire</a>
 {% endif %}
 
 {% for stagiaire in stagiaires %}

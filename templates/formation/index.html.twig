@@ -3,7 +3,7 @@
 {% block title %}Liste des formations{% endblock %}
 
 {% block body %}
-<h1>Liste des formations</h1>
+<h1>Liste des formations :</h1>
 {% for formation in formations %}
 
     <a href="{{path('formation_detail', {'id': formation.getId()})}}">{{ formation.getFormationName() }}</a><br>

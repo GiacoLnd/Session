@@ -20,6 +20,7 @@ class FormateurController extends AbstractController
             'controller_name' => 'FormateurController',
         ]);
     }
+    //Fonction de listing des formateurs
     #[Route('/formateur', name: 'app_formateur')]
     public function list(EntityManagerInterface $entityManager): Response
     {
@@ -28,29 +29,36 @@ class FormateurController extends AbstractController
             'formateurs' => $formateurs,
         ]);
     }
+
+    //Fonction de creation d'un formateur - protégé par l'administrateur et non référencé sur le site
     #[Route('/formateur/new', name: 'formateur_new')]
     public function new(Formateur $formateur = null, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response{
-        if(!$formateur){
-            $formateur = new Formateur();
-        }
+        if($this->getUser() && $this->isGranted('ROLE_ADMIN')) {    
+            if(!$formateur){
+                $formateur = new Formateur();
+            }
 
-        $form = $this->createForm(FormateurType::class, $formateur);
-        $form->handleRequest($request);
+            $form = $this->createForm(FormateurType::class, $formateur);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $passwordHash = $passwordHasher->hashPassword($formateur, $formateur->getPassword());
-            $formateur->setPassword($passwordHash);
-            $formateur = $form->getData();
-            $em->persist($formateur);
-            $em->flush();
-            
+            if($form->isSubmitted() && $form->isValid()){
+                $passwordHash = $passwordHasher->hashPassword($formateur, $formateur->getPassword());
+                $formateur->setPassword($passwordHash);
+                $formateur = $form->getData();
+                $em->persist($formateur);
+                $em->flush();
+                
+                return $this->redirectToRoute('app_formateur');
+            }
+            return $this->render('formateur/new.html.twig', [
+                'formAddFormateur' => $form, 
+            ]);
+        } else {
+            $this->addFlash('error', 'Seul un administrateur connecté peut modifier cette partie');
             return $this->redirectToRoute('app_formateur');
         }
-        return $this->render('formateur/new.html.twig', [
-            'formAddFormateur' => $form, 
-        ]);
     }
-
+    // Fonction de detail d'un formateur
     #[Route('/formateur/{id<\d+>}', name: 'formateur_detail')]
     public function DetailsFormateur(Formateur $formateur): Response
     {

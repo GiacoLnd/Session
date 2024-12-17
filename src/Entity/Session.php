@@ -192,6 +192,10 @@ class Session
     {
         return $this->nombrePlace - $this->stagiaires->count(); 
     }
+    public function getNombreStagiaires()
+    {
+        return count($this->stagiaires);
+    }
     public function __toString()
     {
         return $this->sessionName;

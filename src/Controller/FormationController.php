@@ -18,7 +18,7 @@ class FormationController extends AbstractController
             'controller_name' => 'FormationController',
         ]);
     }
-    
+    // Fonction de listing d'une formation
     #[Route('/formation', name: 'app_formation')]
     public function list(EntityManagerInterface $entityManager): Response
     {
@@ -27,7 +27,7 @@ class FormationController extends AbstractController
             'formations' => $formations,
         ]);
     }
-
+    // Fonction de detail d'une formation
     #[Route('/formation/{id}', name: 'formation_detail')]
     public function detail(Formation $formation): Response
     {
