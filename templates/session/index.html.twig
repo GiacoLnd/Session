@@ -15,7 +15,8 @@
 {% if passedSessions is empty %}
     <p>Aucune session en cours</p>
 {% else %}
-    <table border="1">
+<div class="table-responsive p-2">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Titre de la session</th>
@@ -27,7 +28,7 @@
         <tbody>
             {% for passedSession in passedSessions %}
             <tr>
-                <td><a href="{{path('session_details', {'id': passedSession.id})}}">{{ passedSession.sessionName }}</a></td>
+                <td><a class="text-decoration-none text-success fw-semibold p-1" href="{{path('session_details', {'id': passedSession.id})}}">{{ passedSession.sessionName }}</a></td>
                 <td>{{passedSession.dateDebutSession|date('d/m/Y')}}</td>
                 <td>{{passedSession.dateFinSession|date('d/m/Y')}}</td>
                 <td>{{passedSession.getAvailablePlace}}</td>
@@ -35,39 +36,44 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
 {% endif %}
 
 <h2>Liste des sessions en cours</h2>
+
 {% if currentSessions is empty %}
     <p>Aucune session en cours</p>
 {% else %}
-<table border="1">
-    <thead>
-        <tr>
-            <th>Titre de la session</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
-            <th>Places disponibles</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for currentSession in currentSessions %}
-        <tr>
-            <td><a href="{{path('session_details', {'id': currentSession.id})}}">{{ currentSession.sessionName }}</a></td>
-            <td>{{currentSession.dateDebutSession|date('d/m/Y')}}</td>
-            <td>{{currentSession.dateFinSession|date('d/m/Y')}}</td>
-            <td>{{currentSession.getAvailablePlace}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="table-responsive p-2">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Titre de la session</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Places disponibles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for currentSession in currentSessions %}
+            <tr>
+                <td><a class="text-decoration-none text-success fw-semibold p-1" href="{{path('session_details', {'id': currentSession.id})}}">{{ currentSession.sessionName }}</a></td>
+                <td>{{currentSession.dateDebutSession|date('d/m/Y')}}</td>
+                <td>{{currentSession.dateFinSession|date('d/m/Y')}}</td>
+                <td>{{currentSession.getAvailablePlace}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endif %}
 
 <h2>Liste des sessions futures</h2>
 {% if nextSessions is empty %}
     <p>Aucune session en cours</p>
 {% else %}
-    <table border="1">
+<div class="table-responsive p-2">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Titre de la session</th>
@@ -79,7 +85,7 @@
         <tbody>
             {% for nextSession in nextSessions %}
             <tr>
-                <td><a href="{{path('session_details', {'id': nextSession.id})}}">{{ nextSession.sessionName }}</a></td>
+                <td><a class="text-decoration-none text-success fw-semibold p-1 href="{{path('session_details', {'id': nextSession.id})}}">{{ nextSession.sessionName }}</a></td>
                 <td>{{nextSession.dateDebutSession|date('d/m/Y')}}</td>
                 <td>{{nextSession.dateFinSession|date('d/m/Y')}}</td>
                 <td>{{nextSession.getAvailablePlace}}</td>
@@ -87,5 +93,6 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
 {% endif %}
 {% endblock %}

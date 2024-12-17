@@ -9,11 +9,14 @@
     </div>
 {% endfor %}
 <h1>Liste des modules de formation :</h1>
-<a href="{{path('form_module_new')}}" class="btn btn-primary">Ajoutez un module</a>
+
+{% if is_granted('ROLE_ADMIN')%}
+        <a href="{{path('form_module_new')}}" class="btn btn-primary">Ajoutez un module</a>
+{% endif %}
 
 {% for formModule in formModules %}
-
-        <p><a href="{{path('form_module_detail', {'id': formModule.getId()})}}">{{ formModule.getModuleName() }}</a> - Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+    
+        <p class="border border-success rounded p-2"><a class="text-decoration-none text-success fw-semibold p-2" href="{{path('form_module_detail', {'id': formModule.getId()})}}">{{ formModule.getModuleName() }}</a> - Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
     
 {% endfor %}
 

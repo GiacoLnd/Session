@@ -18,6 +18,7 @@ class FormModuleType extends AbstractType
     {
         $builder
             ->add('moduleName', TextType::class, [
+                'label' => 'Nom du module',
                 'attr'  => [
                     'class' => 'form-control'
                 ]
@@ -25,15 +26,12 @@ class FormModuleType extends AbstractType
             ->add('categorie', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'CategoryModuleName',
-                'expanded' => true,
-                'multiple' => false,
                 'label' => 'Catégorie',
+                'expanded' => false, 
+                'multiple' => false, 
                 'attr' => [
-                    'class' => 'form-check-input', 
-                    ],
-                'row_attr' => [
-                    'class' => 'form-check',
-                ]
+                    'class' => 'form-select', 
+                ],
             ])
             ->add('valider', SubmitType::class, [
                 'attr'  => [

@@ -6,37 +6,31 @@
 <h1>Ajoutez une session</h1>
 
 {{form_start(formAddSession)}}
-<div>
-    <div class="col-sm">
+<div class="row g-3">
+    <div class="col-12">
         {{form_row(formAddSession.sessionName)}}
     </div>
-</div>
-<div class="row">
-    <div class="col-sm">
+    <div class="col-md-6">
         {{form_row(formAddSession.dateDebutSession)}}
     </div>
-    <div class="col-sm">
+    <div class="col-md-6">
         {{form_row(formAddSession.dateFinSession)}}
     </div>
-</div>
-<div class="row">
-    <div class="col-sm">
+    <div class="col-md-6">
         {{form_row(formAddSession.formateur)}}
     </div>
-    <div class="col-sm">
+    <div class="col-md-6">
         {{form_row(formAddSession.formation)}}
     </div>
-</div>
-<div class="row">
-    <div class="col-sm">
-        {{form_row(formAddSession.stagiaires)}}
-    </div>
-    <div class="col-sm">
+    <div class="col-12">
         {{form_row(formAddSession.nombrePlace)}}
     </div>
-</div>
-<div class="w-100">
-    {{form_row(formAddSession.valider)}}
+    <div class="form-check">
+        {{form_row(formAddSession.stagiaires)}}
+    </div>
+    <div class="col-12 text-center m-3">
+        {{form_row(formAddSession.valider)}}
+    </div>
 </div>
 {{form_end(formAddSession)}}
 

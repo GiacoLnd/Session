@@ -6,12 +6,14 @@
 {% block body %}
 
 
-<h1>Détails de la session :</h1>
-<h2>{{ session.sessionName }}</h2>
-Date de début: <strong>{{ session.dateDebutSession|date('d/m/Y') }}</strong><br>
-Date de fin : <strong>{{ session.dateFinSession|date('d/m/Y') }}</strong><br> 
+<h2 class="text-center m-3">{{ session.sessionName }}</h2>
 
-Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()})}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a>
+<div>
+<p>Date de début: <strong>{{ session.dateDebutSession|date('d/m/Y') }}</strong></p>
+<p>Date de fin : <strong>{{ session.dateFinSession|date('d/m/Y') }}</strong></p>
+
+<p>Professeur : <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{path('formateur_detail', {'id': session.formateur.getId()})}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a></p>
+</div>
 
 
 <h3>Liste des modules :</h3>
@@ -21,7 +23,7 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
 {% else %}
     {% for programme in session.programmes %}
         <p>
-            <a href="{{ path('form_module_detail', {'id': programme.formModule.id}) }}">
+            <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('form_module_detail', {'id': programme.formModule.id}) }}">
                 {{ programme.formModule.moduleName }}
             </a>
             - {{ programme.duree }} jours
@@ -42,7 +44,7 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
 {% else %}
     {% for stagiaire in stagiairesInscrits %}
         <p>
-            <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
+            <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
                 {{ stagiaire.prenom }} {{ stagiaire.nom }}
             </a>
             {% if is_granted('ROLE_ADMIN') %}
@@ -54,28 +56,32 @@ Professeur :<a href="{{path('formateur_detail', {'id': session.formateur.getId()
         </p>
     {% endfor %}
 {% endif %}
-Places totales : <strong>{{ session.nombrePlace }}</strong><br>
-Places restantes : <strong>{{session.getAvailablePlace}}</strong>
+
+<p>Places totales : <strong>{{ session.nombrePlace }}</strong></p>
+<p>Places restantes : <strong>{{session.getAvailablePlace}}</strong></p>
 
 {% if is_granted('ROLE_ADMIN') %}
-    Liste des stagiaires non-inscrits :
-
-    {% if stagiairesNonInscrits is empty %}
-        <p>Aucun stagiaire disponible pour cette session</p>
+    <h3>Liste des stagiaires non-inscrits :</h3>
+    {% if session.getAvailablePlace == 0 %}
+            La session est pleine. Aucun stagiaire ne peut s'inscrire.
     {% else %}
-        {% for stagiaire in stagiairesNonInscrits %}
-            <p>
-                <a href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
-                    {{ stagiaire.prenom }} {{ stagiaire.nom }}
-                </a>
-                <a href="{{ path('session_inscrire_stagiaire', {
-                    'session': session.id,
-                    'stagiaire': stagiaire.id
-                }) }}" class="btn btn-success">Inscrire le stagiaire</a>
-        {% endfor %}
+            {% if stagiairesNonInscrits is empty %}
+                <p>Aucun stagiaire disponible pour cette session</p>
+            {% else %}
+                {% for stagiaire in stagiairesNonInscrits %}
+                    <p>
+                        <a class="text-decoration-none text-success fw-semibold p-1" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
+                            {{ stagiaire.prenom }} {{ stagiaire.nom }}
+                        </a>
+                        <a href="{{ path('session_inscrire_stagiaire', {
+                            'session': session.id,
+                            'stagiaire': stagiaire.id
+                        }) }}" class="btn btn-success">Inscrire le stagiaire</a>
+                {% endfor %}
+            {% endif %}
     {% endif %}
 
-    <h2>Prévoir des modules pour cette session</h2>
+    <h3>Prévoir des modules pour cette session</h3>
     {% if modulesNonProgrammes is empty %}
         <p>Aucun programme n'est disponible pour cette session</p>
     {% else %}

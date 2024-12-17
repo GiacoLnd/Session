@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-image: url('../img/background.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+}
+.h1{
+        background: linear-gradient(to right, #911a80, #d42b45);
+        background-clip: text;
+        color: transparent;
+}
+td{
+    text-align: center;
+}

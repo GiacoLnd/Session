@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h2>Liste des stagiaires :</h2>
+<h2 class="text-center m-3">Liste des stagiaires :</h2>
 
 {% if is_granted('ROLE_ADMIN')%}
     <a href="{{path('stagiaire_new')}}" class='btn btn-primary'>Ajoutez un stagiaire</a>
@@ -12,6 +12,6 @@
 
 {% for stagiaire in stagiaires %}
 
-    <p><a href="{{path('stagiaire_detail', {'id': stagiaire.getId()})}}">{{ stagiaire.prenom|capitalize }} {{ stagiaire.nom|capitalize }}</a></p>
+    <p><a class="text-decoration-none text-success fw-semibold border border-success rounded p-1 m-3" href="{{path('stagiaire_detail', {'id': stagiaire.getId()})}}">{{ stagiaire.prenom|capitalize }} {{ stagiaire.nom|capitalize }}</a></p>
 {% endfor %}
 {% endblock %}
