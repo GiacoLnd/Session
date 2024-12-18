@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Liste des sessions{% endblock %}
+{% block title %}Détails d'une session{% endblock %}
 
 {% block body %}
 
@@ -18,8 +18,8 @@
 <p>Places totales : <strong>{{ session.nombrePlace }}</strong></p>
 <p>Places restantes : <strong>{{session.getAvailablePlace}}</strong></p>
 
-<div id="session-container" class="container-fluid d-flex justify-content-between align-items-center gap-5">
-    <div id="stagiaires-container" class="container d-flex flex-column justify-content-between align-items-end text-end">
+<div id="session-container" class="container-fluid d-flex justify-content-between align-items-start gap-5">
+    <div id="stagiaires-container" class="container d-flex flex-column justify-content-between align-items-end text-end border border-primary rounded  border-opacity-50 border-4 shadow m-3">
         <div class="stagiaires-inscrits">
             <h3>Liste des stagiaires :</h3>
             {% if stagiairesInscrits is empty %}
@@ -61,7 +61,7 @@
         </div> 
     </div>
 
-    <div id="modules-container" class="container d-flex flex-column justify-content-between align-items-start">
+    <div id="modules-container" class="container d-flex flex-column justify-content-between align-items-start border rounded border-primary  border-opacity-50 border-4 shadow m-3">
         <div class="modules-prevus">
             <h3 clas="">Liste des modules :</h3>   
                 {% if session.programmes is empty %}
@@ -84,7 +84,7 @@
 
         <div class="modules-non-prevus">
             {% if is_granted('ROLE_ADMIN') %}
-                <h3>Prévoir des modules</h3>
+                <h3>Prévoir des modules :</h3>
                 {% if modulesNonProgrammes is empty %}
                     <p>Aucun programme n'est disponible pour cette session</p>
                 {% else %}
@@ -92,8 +92,8 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Durée (en jours)</th>
-                                <th>Module</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,7 +102,7 @@
                                 <td>
                                     <form method="post" class ="p-1" action="{{ path('session_inscrire_module', { 'session': session.id, 'module': module.id }) }}">
                                         <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
-                                        <input class="border rounded border-success text-center" type="number" name="duree" placeholder="Durée">
+                                        <input class="border rounded border-success text-center" type="number" name="duree" placeholder="Durée" required>
                                     </form>
                                 </td>
                                 <td>{{ module.moduleName }}</td>

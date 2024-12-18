@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FormateurController!{% endblock %}
+{% block title %}Liste des formateurs{% endblock %}
 
 {% block body %}
-<h1>Liste des formateurs :</h1>
+<h3>Liste des formateurs :</h3>
 {% for formateur in formateurs %}
     <a class="text-decoration-none text-success fw-semibold p-1 m-2 border border-success rounded" href="{{path('formateur_detail', {'id': formateur.getId()})}}">{{ formateur.prenom|capitalize }} {{ formateur.nom|capitalize }}</a>
 {% endfor %}
