@@ -15,100 +15,106 @@
 <p>Professeur : <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{path('formateur_detail', {'id': session.formateur.getId()})}}">{{session.formateur.prenom}} {{session.formateur.nom}}</a></p>
 </div>
 
-
-<h3>Liste des modules :</h3>
-
-{% if session.programmes is empty %}
-    <p>Aucun module n'est prévu pour le moment</p>
-{% else %}
-    {% for programme in session.programmes %}
-        <p>
-            <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('form_module_detail', {'id': programme.formModule.id}) }}">
-                {{ programme.formModule.moduleName }}
-            </a>
-            - {{ programme.duree }} jours
-            - {{ programme.formModule.categorie.CategoryModuleName }}
-                {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('session_desinscrire_module', {
-                    'session': session.id,
-                    'module': module.id
-                }) }}" class="btn btn-danger">Désinscrire</a>
-                {% endif %}
-        </p>
-    {% endfor %}
-{% endif %}
-
-<h3>Liste des stagiaires :</h3>
-{% if stagiairesInscrits is empty %}
-    <p>Aucun stagiaire n'est inscrit pour le moment</p>
-{% else %}
-    {% for stagiaire in stagiairesInscrits %}
-        <p>
-            <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
-                {{ stagiaire.prenom }} {{ stagiaire.nom }}
-            </a>
-            {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('session_desinscrire_stagiaire', {
-                'session': session.id,
-                'stagiaire': stagiaire.id
-            }) }}" class="btn btn-danger">Désinscrire le stagiaire</a>
-            {% endif %}
-        </p>
-    {% endfor %}
-{% endif %}
-
 <p>Places totales : <strong>{{ session.nombrePlace }}</strong></p>
 <p>Places restantes : <strong>{{session.getAvailablePlace}}</strong></p>
 
-{% if is_granted('ROLE_ADMIN') %}
-    <h3>Liste des stagiaires non-inscrits :</h3>
-    {% if session.getAvailablePlace == 0 %}
-            La session est pleine. Aucun stagiaire ne peut s'inscrire.
-    {% else %}
-            {% if stagiairesNonInscrits is empty %}
-                <p>Aucun stagiaire disponible pour cette session</p>
+<div id="session-container" class="container-fluid d-flex justify-content-between align-items-center gap-5">
+    <div id="stagiaires-container" class="container d-flex flex-column justify-content-between align-items-end text-end">
+        <div class="stagiaires-inscrits">
+            <h3>Liste des stagiaires :</h3>
+            {% if stagiairesInscrits is empty %}
+                <p>Aucun stagiaire n'est inscrit pour le moment</p>
             {% else %}
-                {% for stagiaire in stagiairesNonInscrits %}
-                    <p>
-                        <a class="text-decoration-none text-success fw-semibold p-1" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">
-                            {{ stagiaire.prenom }} {{ stagiaire.nom }}
-                        </a>
-                        <a href="{{ path('session_inscrire_stagiaire', {
-                            'session': session.id,
-                            'stagiaire': stagiaire.id
-                        }) }}" class="btn btn-success">Inscrire le stagiaire</a>
+                {% for stagiaire in stagiairesInscrits %}
+                <p><a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">{{ stagiaire.prenom }} {{ stagiaire.nom }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('session_desinscrire_stagiaire', {
+                        'session': session.id,
+                        'stagiaire': stagiaire.id
+                        }) }}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></a>
+                {% endif %}
+                </p>
                 {% endfor %}
             {% endif %}
-    {% endif %}
+        </div> 
 
-    <h3>Prévoir des modules pour cette session</h3>
-    {% if modulesNonProgrammes is empty %}
-        <p>Aucun programme n'est disponible pour cette session</p>
-    {% else %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Module</th>
-                    <th>Durée (en jours)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for module in modulesNonProgrammes %}
-                    <tr>
-                        <td>{{ module.moduleName }}</td>
-                        <td>
-                            <form method="post" class ="p-1" action="{{ path('session_inscrire_module', { 'session': session.id, 'module': module.id }) }}">
-                                <input type="number" name="duree" placeholder="Durée">
-                                <button type="submit" class="btn btn-success">Inscrire</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-{% endif %}
+        <div class="stagiaires-non-inscrits">   
+            {% if is_granted('ROLE_ADMIN') %}
+                <h3>Non-inscrits :</h3>
+                {% if session.getAvailablePlace == 0 %}
+                    La session est pleine. Aucun stagiaire ne peut s'inscrire.
+                {% else %}
+                    {% if stagiairesNonInscrits is empty %}
+                    <p>Aucun stagiaire disponible pour cette session</p>
+                    {% else %}
+                    {% for stagiaire in stagiairesNonInscrits %}
+                        <p>
+                        <a class="text-decoration-none text-success fw-semibold p-1" href="{{ path('stagiaire_detail', {'id': stagiaire.id}) }}">{{ stagiaire.prenom }} {{ stagiaire.nom }}</a>
+                        <a href="{{ path('session_inscrire_stagiaire', {
+                        'session': session.id,
+                        'stagiaire': stagiaire.id
+                        }) }}" class="btn btn-success"><i class="fa-solid fa-plus"></i></a>
+                    {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div> 
+    </div>
+
+    <div id="modules-container" class="container d-flex flex-column justify-content-between align-items-start">
+        <div class="modules-prevus">
+            <h3 clas="">Liste des modules :</h3>   
+                {% if session.programmes is empty %}
+                    <p>Aucun module n'est prévu pour le moment</p>
+                {% else %}
+                    {% for programme in session.programmes %}
+                        <p>
+                            <a href="{{ path('session_desinscrire_module', {
+                                'session': session.id,
+                                'module': module.id
+                                }) }}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></a>
+                            <a class="text-decoration-none text-success fw-semibold p-1 border border-success rounded m-2" href="{{ path('form_module_detail', {'id': programme.formModule.id}) }}">{{ programme.formModule.moduleName }}</a>
+                         {{ programme.duree }} jours
+                        - {{ programme.formModule.categorie.CategoryModuleName }}  
+
+                        </p>
+                    {% endfor %}
+                {% endif %}
+        </div>
+
+        <div class="modules-non-prevus">
+            {% if is_granted('ROLE_ADMIN') %}
+                <h3>Prévoir des modules</h3>
+                {% if modulesNonProgrammes is empty %}
+                    <p>Aucun programme n'est disponible pour cette session</p>
+                {% else %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Durée (en jours)</th>
+                                <th>Module</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for module in modulesNonProgrammes %}
+                            <tr>
+                                <td>
+                                    <form method="post" class ="p-1" action="{{ path('session_inscrire_module', { 'session': session.id, 'module': module.id }) }}">
+                                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
+                                        <input class="border rounded border-success text-center" type="number" name="duree" placeholder="Durée">
+                                    </form>
+                                </td>
+                                <td>{{ module.moduleName }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 
