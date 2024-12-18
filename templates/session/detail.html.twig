@@ -98,7 +98,7 @@
                     <tr>
                         <td>{{ module.moduleName }}</td>
                         <td>
-                            <form method="post" action="{{ path('session_inscrire_module', { 'session': session.id, 'module': module.id }) }}">
+                            <form method="post" class ="p-1" action="{{ path('session_inscrire_module', { 'session': session.id, 'module': module.id }) }}">
                                 <input type="number" name="duree" placeholder="Durée">
                                 <button type="submit" class="btn btn-success">Inscrire</button>
                             </form>

@@ -7,40 +7,31 @@
 
 {{form_start(formAddStagiaire)}}
 
-<div class="row">
-    <div class="col-sm">
+<div class="row g-3">
+    <div class="col-6">
         {{form_row(formAddStagiaire.prenom)}}
     </div>
-    <div class="col-sm">
+    <div class="col-6">
         {{form_row(formAddStagiaire.nom)}}
     </div>
-</div>
-<div>
-    <div class="col-sm">
+    <div class="col-6">
         {{form_row(formAddStagiaire.ville)}}
     </div>
-    <div class="col-sm">
+    <div class="col-6">
         {{form_row(formAddStagiaire.dateNaissance)}}
     </div>
-</div>
-<div class="row">
-</div>
-<div class="row">
-    <div class="col-sm">
+    <div class="col-12 text-center">
         {{form_row(formAddStagiaire.phone)}}
     </div>
-    <div class="col-sm">
+    <div class="col-12 text-center">
         {{form_row(formAddStagiaire.email)}}
     </div>
-    <div class="col-sm">
-        {{form_row(formAddStagiaire.password)}}
-    </div>
-    <div class="col-sm">
+    <div class="col-12 text-center">
         {{form_row(formAddStagiaire.sessions)}}
     </div>
-</div>
-<div class="w-100">
-    {{form_row(formAddStagiaire.valider)}}
+    <div class="col-12 text-center pb-3">
+        {{form_row(formAddStagiaire.valider)}}
+    </div>
 </div>
 {{form_end(formAddStagiaire)}}
 

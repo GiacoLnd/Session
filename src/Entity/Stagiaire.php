@@ -40,9 +40,6 @@ class Stagiaire
     #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'stagiaires')]
     private Collection $sessions;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
@@ -156,17 +153,4 @@ class Stagiaire
     {
         return $this->nom . ' ' . $this->prenom;
     }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
 }

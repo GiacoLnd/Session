@@ -11,58 +11,60 @@
 
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg bg-transparent">
-            <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
-                <ul class="nav flex-nowrap">
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark d-flex align-items-center" href="{{ path('app_formation') }}">
-                            <img src="{{ asset('img/logo-no-bg.png') }}" alt="Logo" width="100" height="100" class="me-2">
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_session') }}">
-                            Liste des sessions
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_stagiaire') }}">
-                            Liste des stagiaires
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_formateur') }}">
-                            Liste des formateurs
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_form_module') }}">
-                            Liste des modules
-                        </a>
-                    </li>
-                    {% if app.user %}
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_logout') }}">
-                            Déconnexion
-                        </a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_login') }}">
-                            Connexion
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_register') }}">
-                            Inscription
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
+        <div class="maincontainer">
+            <nav class="navbar navbar-expand-lg bg-transparent">
+                <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
+                    <ul class="nav flex-nowrap">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark d-flex align-items-center" href="{{ path('app_formation') }}">
+                                <img src="{{ asset('img/logo-no-bg.png') }}" alt="Logo" width="100" height="100" class="me-2">
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_session') }}">
+                                Liste des sessions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_stagiaire') }}">
+                                Liste des stagiaires
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_formateur') }}">
+                                Liste des formateurs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_form_module') }}">
+                                Liste des modules
+                            </a>
+                        </li>
+                        {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_logout') }}">
+                                Déconnexion
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_login') }}">
+                                Connexion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold text-uppercase text-dark" href="{{ path('app_register') }}">
+                                Inscription
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>   
+            <div id="wrapper" class="d-flex flex-column justify-content-center align-items-center">
+                <h1 class="display-3 text-center fw-bold text-primary">SessionCraft</h1>
+                {% block body %}{% endblock %}
             </div>
-        </nav>   
-        <div id="wrapper" class="d-flex flex-column justify-content-center align-items-center mb-5">
-            <h1 class="display-3 text-center fw-bold text-primary">SessionCraft</h1>
-            {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> 

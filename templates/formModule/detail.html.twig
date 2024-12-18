@@ -3,12 +3,12 @@
 {% block title %}Détails d'un module{% endblock %}
 
 {% block body %}
-<h1>Détail d'un module de formation :</h1>
-<p>Module : {{ formModule.getModuleName() }}</p>
-<p>Catégorie : {{ formModule.categorie.CategoryModuleName }}</p>
+<h3 class="p-3">Détail d'un module de formation :</h3>
+<p>Module : <strong>{{ formModule.getModuleName() }}</strong></p>
+<p>Catégorie : <strong>{{ formModule.categorie.CategoryModuleName }}</strong></p>
 <p>Sessions associées :
     {% for programme in formModule.programmes %}
-        {{ programme.session.sessionName }} - {{ programme.duree }} jours     
+    <strong>{{ programme.session.sessionName }}</strong>     
     {% endfor %}
 </p>
 

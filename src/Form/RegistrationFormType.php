@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -18,7 +19,11 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('email', TextType::class, [
+                'attr' => [ 'label' => 'Email',
+                            'class' => 'form-control',
+                        ]
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -26,6 +31,10 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+                'label' => 'Accepter les conditions',
+                'attr' => [
+                    'class' => 'form-check-input',
+                    ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
@@ -35,8 +44,22 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  =>     ['label' => 'Mot de passe',
+                                        'attr' => [
+                                            'class' => 'form-control',
+                                            ],
+                                        'label_attr' => [
+                                            'class' => 'form-label',
+                                            ],
+                                        ],
+                'second_options' =>     ['label' => 'Confirmez votre mot de passe',
+                                        'attr' => [
+                                            'class' => 'form-control',
+                                            ],
+                                        'label_attr' => [
+                                            'class' => 'form-label',
+                                            ],
+                                        ],
             ]);
     }
 

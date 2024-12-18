@@ -4,15 +4,16 @@
 
 {% block body %}
 
-<h1>Détail d'un stagiaire</h1>
+<h2 class="p-2">Détail d'un stagiaire</h2>
 
-<h2>{{ stagiaire.prenom | capitalize }} {{ stagiaire.nom | capitalize }}</h2>
-Date de naissance : {{ stagiaire.dateNaissance|date('d/m/Y') }}<br>
-Ville de résidence : {{ stagiaire.ville | capitalize }}<br>
-Email : {{ stagiaire.email }}<br>
-Téléphone : {{ stagiaire.phone }}<br>
+<h3 class="p-3">{{ stagiaire.prenom | capitalize }} {{ stagiaire.nom | capitalize }}</h3>
+<p>Date de naissance : {{ stagiaire.dateNaissance|date('d/m/Y') }}</p>
+<p>Ville de résidence : {{ stagiaire.ville | capitalize }}</p>
+<p>Email : {{ stagiaire.email }}</p>
+<p>Téléphone : {{ stagiaire.phone }}</p>
 
-Liste des sessions suivies :
+<h3 class="p-3">Liste des sessions suivies :</h3>
+
 
 {% if stagiaire.sessions is empty %}
     <p>Aucune session n'est suivie en ce moment</p>
@@ -23,7 +24,8 @@ Liste des sessions suivies :
 {% endif %}
 
 {% if is_granted('ROLE_ADMIN')%}
-    <a href="{{path('stagiaire_edit', {'id': stagiaire.getId()})}}">Editez le stagiaire</a>
+    <a class="text-decoration-none text-success fw-semibold pb-3" href="{{path('stagiaire_edit', {'id': stagiaire.getId()})}}">Editez le stagiaire</a>
 {% endif %}
+
 
 {% endblock %}

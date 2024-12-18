@@ -3,10 +3,10 @@
 {% block title %}Détail de la formation {{ formation.getFormationName() }}{% endblock %}
 
 {% block body %}
-<h1>Détail de la formation {{ formation.getFormationName() }}</h1>
+<h3 class="p-3">Formation : {{ formation.getFormationName() }}</h3>
 {% for session in formation.sessions %}
-
-    <p><a href="/session/{{ session.getId() }}">{{ session.getSessionName() }}</a>, du {{ session.getDateDebutSession()|date('d/m/Y') }} au {{ session.getDateFinSession()|date('d/m/Y') }}</p><br>
+    
+    <p><a class="text-decoration-none text-success border border-success rounded p-2" href="/session/{{ session.getId() }}">{{ session.getSessionName() }}</a>, du <strong>{{ session.getDateDebutSession()|date('d/m/Y') }}</strong> au <strong>{{ session.getDateFinSession()|date('d/m/Y') }}</strong></p><br>
     
 {% endfor %}
 
